@@ -1,0 +1,64 @@
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.5.0/semantic.min.css">
+
+<div class="ui fluid aligned container" style="background-color: #AAA; width: 90%">
+<div class="ui padded grid">
+  <div class="three wide column blue"><h2>SISTEMA WEB</h2></div>
+  <div class="two wide column blue"><h3><a href="/" style="color: white;">Cadastrar</a></h3></div>
+  <div class="two wide column blue"><h3><a href="/consulta" style="color: #FFFFFF; opacity: 0.7;">Consultar</a></h3></div>
+  <div class="nine wide column blue"></div>
+</div><br>
+  <div class="ui padded one column grid">
+    <div class="ui column"><h2>Cadastrar - Agendamento de Potenciais Clientes</h2></div>
+    <div class="ui column"><h4>Sistema Utilizado para Agendamento de serviços</h4></div>
+  </div>
+
+  <div class="ui equal width padded grid">
+    <div class="row blue">
+        {{!-- <div class="column">
+            Id
+        </div> --}}
+        <div class="column">
+            Nome
+        </div>
+        <div class="column">
+            Telefone
+        </div>
+        <div class="column">
+            Origem
+        </div>
+        {{!-- <div class="column">
+            Data de Contato
+        </div> --}}
+        <div class="five wide column">
+            Observacao
+        </div>
+    </div>
+    {{#each agendamentos}}
+    <div class="vertical row">
+        {{!-- <div class="column">
+            <a href="#">
+            <button>
+                {{data.id}}
+            </button>
+            </a>
+        </div> --}}
+        <div class="column">
+            {{data.nome}}
+        </div>
+        <div class="column">
+            {{data.telefone}}
+        </div>
+        <div class="column">
+            {{data.origem}}
+        </div>
+        {{!-- <div class="column">
+            {{data.dataContato}}
+        </div> --}}
+        <div class="five wide column" style=" word-wrap: break-word; ">
+            {{data.observacao}}
+        </div>
+    </div>
+    {{/each}}
+</div>
+<br>
+</div>

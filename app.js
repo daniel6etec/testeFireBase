@@ -4,6 +4,7 @@ const handlebars = require("express-handlebars").engine
 const bodyParser = require("body-parser")
 const { initializeApp, applicationDefault, cert } = require('firebase-admin/app')
 const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore')
+//const {doc, setDoc, addDoc, collection, getDocs} = require("firebase/firestore")
 
 const serviceAccount = require('./nodefirestoreteste-firebase-adminsdk-eg1g9-c3155d8fc2.json')
 
@@ -11,7 +12,8 @@ initializeApp({
   credential: cert(serviceAccount)
 })
 
-const db = getFirestore()
+const db = require("./firebase/firebase.js")
+var {doc, setDoc, addDoc, collection, getDocs} = require("firebase/firestore")
 
 app.engine("handlebars", handlebars({defaultLayout: "main"}))
 app.set("view engine", "handlebars")
@@ -23,9 +25,21 @@ app.get("/", function(req, res){
     res.render("primeira_pagina")
 })
 
+//
 app.get("/consulta", function(req, res){
-    
+    getDocs(collection(db, 'agendamentos')).then((data) => {
+        var agendamentos = []
+
+        data.forEach((docs) => {
+            agendamentos.push({id: docs.id, data: docs.data()})
+        })
+
+        res.render('consulta', { agendamentos: agendamentos})
+    }).catch(function(erro){
+        console.log("Ocorreu um erro: "+ erro)
+    })
 })
+//
 
 app.get("/editar/:id", function(req, res){
 })
@@ -34,15 +48,15 @@ app.get("/excluir/:id", function(req, res){
 })
 
 app.post("/cadastrar", function(req, res){
-    var result = db.collection('agendamentos').add({
+    addDoc(collection(db, "agendamentos"), {
         nome: req.body.nome,
         telefone: req.body.telefone,
         origem: req.body.origem,
         data_contato: req.body.data_contato,
         observacao: req.body.observacao
-    }).then(function(){
-        console.log('Added document');
-        res.redirect('/')
+    }).then((data)=> {
+        console.log("Added document")
+        res.redirect("/")
     })
 })
 
