@@ -32,6 +32,9 @@
         <div class="five wide column">
             Observacao
         </div>
+        <div class="column">
+            Editar/Deletar
+        </div>
     </div>
     {{#each agendamentos}}
     <div class="vertical row">
@@ -56,6 +59,18 @@
         </div> --}}
         <div class="five wide column" style=" word-wrap: break-word; ">
             {{data.observacao}}
+        </div>
+        <div class="column">
+            <a href="/editar/{{id}}">
+                <button>
+                    Editar
+                </button>
+            </a>
+            <a href="/excluir/{{id}}">
+                <button>
+                    Excluir
+                </button>
+            </a>
         </div>
     </div>
     {{/each}}

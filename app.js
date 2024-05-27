@@ -13,7 +13,7 @@ initializeApp({
 })
 
 const db = require("./firebase/firebase.js")
-var {doc, setDoc, addDoc, collection, getDocs} = require("firebase/firestore")
+var {doc, setDoc, addDoc, collection, getDocs, getDoc, updateDoc} = require("firebase/firestore")
 
 app.engine("handlebars", handlebars({defaultLayout: "main"}))
 app.set("view engine", "handlebars")
@@ -42,9 +42,26 @@ app.get("/consulta", function(req, res){
 //
 
 app.get("/editar/:id", function(req, res){
+    getDoc(doc(db, "agendamentos", req.params.id)).then((data) => {
+        var agendamentos = {id: data.id, data: data.data()}
+
+        res.render('editar', { agendamento: agendamentos})
+    }).catch((erro)=>{
+        console.log("Ocorreu um erro: "+ erro)
+    })
+
+
 })
 
 app.get("/excluir/:id", function(req, res){
+    const { /*doc,*/ deleteDoc, getDoc } =  require("firebase/firestore");
+    //const endereco = getDoc(doc(db, "agendamentos", req.params.id))
+
+    deleteDoc(doc(db, "agendamentos", req.params.id)).then(()=> {
+        res.redirect("/consulta")
+    }).catch((erro)=>{
+        console.log("Ocorreu um erro: "+ erro)
+    })
 })
 
 app.post("/cadastrar", function(req, res){
@@ -61,6 +78,17 @@ app.post("/cadastrar", function(req, res){
 })
 
 app.post("/atualizar", function(req, res){
+    const refEndereco = doc(db, "agendamentos", req.body.id)
+    updateDoc(refEndereco, {
+        nome: req.body.nome,
+        telefone: req.body.telefone,
+        origem: req.body.origem,
+        data_contato: req.body.data_contato,
+        observacao: req.body.observacao
+    }).then((data)=> {
+        console.log("document updated")
+        res.redirect("/consulta")
+    })
 })
 
 app.listen(8081, function(){
